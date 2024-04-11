@@ -100,17 +100,52 @@ class cube():
                     self.rotate_face('F'), self.rotate_side('F'), self.rotate_face('F'), self.rotate_side('F'), self.rotate_face('F'), self.rotate_side('F')
                     self.rotate_loc('z')
 
+    def translate(self, moves):
+        moves2 = ''
+        i = 0
+        while 1:
+            if i >= len(moves):
+                break
+            if moves[i]=="'" and moves[i + 1] == '2':
+                i += 1
+                continue
+            moves2 += moves[i]
+            i += 1
+        moves = moves2
+
+        s = ''
+        i = 0
+        while 1:
+            if i >= len(moves):
+                break
+            if moves[i] in '()':
+                t = ''
+                i += 1
+                while moves[i] != ')':
+                    t += moves[i]
+                    i += 1
+                i += 1
+                try:
+                    times = int(moves[i])
+                except:
+                    times = 1
+                    i -= 1
+                s += t * times
+            else:
+                s += moves[i]
+            i += 1
+        return s
 
     def run(self, s):
         s = s.replace(" ", "")
+        s = s.replace("’", "'")
         s += '#'
+        s = self.translate(s)
+        print(s)
         i = 0
         while 1:
             if s[i] == '#':
                 break
-            if s[i] in '()':  # to be fixed
-                i += 1
-                continue
             face = s[i]
             if s[i + 1] == "'":
                 times = 3
